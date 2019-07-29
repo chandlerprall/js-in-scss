@@ -1,7 +1,7 @@
 This repo is in two parts:
 
 * **src** contains the scss pre-processing and runtime modules powering variable overrides
-* **app** is a React application demonstrating the variable overrides
+* **app** is a React application demonstrating the variable overrides and SCSS+JSX encapsulation
 
 ## installation
 
