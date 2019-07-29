@@ -19,17 +19,23 @@ export class ScssJsRuntime {
     parts: ScssPart[] = [];
     originalVariables: Variables = {};
     variables: Variables = {};
+    scope?: string;
 
     constructor(_parts: ScssPart[]) {
         document.head.appendChild(this.styleElement);
         this.stylesheet = <CSSStyleSheet> this.styleElement.sheet;
 
-        const [setOriginalVariables, ...parts] = _parts;
+        const [setOriginalVariables, setScope, ...parts] = _parts;
         this.parts = parts;
         setOriginalVariables(this);
+        setScope(this);
         this.originalVariables = this.variables;
         this.processBlocks();
         runtimes.push(this);
+    }
+
+    setScope(scope: string) {
+        this.scope = scope;
     }
 
     private processBlocks() {
@@ -88,10 +94,12 @@ export class ScssJsRuntime {
                 if (value[0] === '$') {
                    value = this.getValueForVariable(value);
                 }
+
                 rules.push(`${key}: ${value}`);
             }
 
             for (let i = 0; i < selectors.length; i++) {
+                console.log(`${selectors[i]} { ${rules.join(';')} }`);
                 this.stylesheet.insertRule(`${selectors[i]} { ${rules.join(';')} }`);
             }
         }
@@ -111,7 +119,7 @@ export class ScssJsRuntime {
         // start building the selectors
         const selectorGroup = this.selectors[this.selectors.length - 1];
         for (let i = 0; i < selectorGroup.length; i++) {
-            selectors.push(selectorGroup[i]);
+            selectors.push(`${selectorGroup[i]}${this.scope || ''}`);
         }
 
         for (let i = this.selectors.length - 2; i >= 0; i--) {
@@ -121,7 +129,7 @@ export class ScssJsRuntime {
             const group = this.selectors[i];
             for (let j = 0; j < group.length; j++) {
                 for (let k = 0; k < selectors.length; k++) {
-                    expandedSelectors.push(`${group[j]} ${selectors[k]}`);
+                    expandedSelectors.push(`${group[j]} ${selectors[k]}${this.scope || ''}`);
                 }
             }
 

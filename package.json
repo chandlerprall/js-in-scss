@@ -1,0 +1,31 @@
+{
+  "name": "js-in-scss",
+  "private": true,
+  "version": "0.0.1",
+  "main": "lib/src",
+  "license": "Zlib",
+  "jest": {
+    "roots": [
+      "<rootDir>/tests"
+    ],
+    "transform": {
+      "^.+\\.ts$": "ts-jest"
+    }
+  },
+  "dependencies": {
+    "gonzales-pe": "^4.2.4"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.5.5",
+    "@babel/template": "^7.4.4",
+    "@types/glob": "^7.1.1",
+    "@types/jest": "^24.0.15",
+    "@types/memory-fs": "^0.3.2",
+    "@types/node": "^12.6.8",
+    "glob": "^7.1.4",
+    "jest": "^24.8.0",
+    "memory-fs": "^0.4.1",
+    "ts-jest": "^24.0.2",
+    "typescript": "^3.5.3"
+  }
+}

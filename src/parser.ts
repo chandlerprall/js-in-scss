@@ -153,6 +153,9 @@ function removeExtraNodes<T extends Node>(node: T): T {
 const buildSetVariables: ReturnType<TemplateBuilder<babel.types.ExpressionStatement>> = <any> template(`
     context => context.setVariables(%%variables%%);
 `);
+const buildSetScopeClass: ReturnType<TemplateBuilder<babel.types.ExpressionStatement>> = <any> template(`
+    context => context.setScope(%%scopeClass%%);
+`);
 export function processScss(source: string, scopeClass: string): string {
     const ast = removeExtraNodes(parse(source, { syntax: 'scss' }));
 
@@ -178,7 +181,8 @@ export function processScss(source: string, scopeClass: string): string {
 
     // expands each RulesetNode into a callable function, each will take override variables, if present
     const parts: any[] = [
-        buildSetVariables({ variables: babel.types.objectExpression(variables) }).expression
+        buildSetVariables({ variables: babel.types.objectExpression(variables) }).expression,
+        buildSetScopeClass({ scopeClass: babel.types.stringLiteral(scopeClass) }).expression
     ];
 
     for (let i = 0; i < ast.content.length; i++) {

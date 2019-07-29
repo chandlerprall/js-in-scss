@@ -71,7 +71,7 @@ describe('scss spec', () => {
         it(specName, () => {
             const fs = buildFs(specName);
             const source = fs.readFileSync('/input.scss').toString();
-            const result = processScss(source, 'test');
+            const result = processScss(source, '');
 
             const container = new Script(`
             const input = ${result};
